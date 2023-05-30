@@ -1,5 +1,8 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        DeckOfCards deck = new DeckOfCards();
+        for (PlayingCard card : deck.getDeck()) {
+            System.out.println(card);
+        }
     }
 }
