@@ -1,9 +1,14 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DeckOfCards {
 
     private List<PlayingCard> deck = new ArrayList<PlayingCard>();
+
+    public void shuffle() {
+        Collections.shuffle(deck);
+    }
 
     public List<PlayingCard> getDeck() {
         return deck;
