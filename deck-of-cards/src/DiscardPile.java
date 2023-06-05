@@ -16,4 +16,8 @@ public class DiscardPile {
     public List<PlayingCard> getDiscard() {
         return discard;
     }
+
+    public int getDiscardPileSize() {
+        return discard.size();
+    }
 }
