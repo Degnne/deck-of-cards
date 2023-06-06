@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -6,6 +8,7 @@ public class Main {
     private DeckOfCards deck = new DeckOfCards();
     private HandOfCards hand = new HandOfCards();
     private DiscardPile discardPile = new DiscardPile();
+    private Map<Integer, String> menu = new HashMap<>();
     private Scanner userInput = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -15,6 +18,7 @@ public class Main {
 
     public void run() {
         shuffleDeck();
+        buildMenu();
         while (true) {
             displayMenu();
             int userSelection;
@@ -27,9 +31,7 @@ public class Main {
                         userSelection = Integer.parseInt(selectionFromUser);
                         validateUserInput(new int[]{1, 2, 3, 0}, userSelection);
                         break;
-                    } catch (NumberFormatException e) {
-                        System.out.println("Please enter a valid number.");
-                    } catch (UserSelectionOutOfBoundsException e) {
+                    } catch (NumberFormatException | UserSelectionOutOfBoundsException e) {
                         System.out.println("Please enter a valid number.");
                     }
                 }
@@ -39,14 +41,20 @@ public class Main {
         }
     }
 
+    public void buildMenu() {
+        menu.put(1, "Draw Cards");
+        menu.put(2, "Look at Your Hand");
+        menu.put(3, "Look at the Discard Pile");
+        menu.put(0, "Quit Program");
+    }
+
     public void displayMenu() {
         System.out.println("There are " + numberOfCardsToString(deck.getDeckSize()) + " in the deck, " +
                 numberOfCardsToString(hand.getHandSize()) + " in your hand, and " +
                 numberOfCardsToString(discardPile.getDiscardPileSize()) + " in the discard pile.");
-        System.out.println("[1] Draw cards");
-        System.out.println("[2] Look at  your hand");
-        System.out.println("[3] Look at the discard pile");
-        System.out.println("[0] Quit program");
+       for (Map.Entry<Integer, String> entry : menu.entrySet()) {
+           System.out.println("[" + entry.getKey() + "] " + entry.getValue());
+       }
     }
 
     public void processMenuSelection(int userSelection) {
@@ -116,6 +124,6 @@ public class Main {
     }
 
     public void endProgram() {
-
+        System.exit(0);
     }
 }
