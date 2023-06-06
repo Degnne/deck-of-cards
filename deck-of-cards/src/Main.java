@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -13,8 +14,8 @@ public class Main {
     }
 
     public void run() {
-        deck.shuffle();
-        do {
+        shuffleDeck();
+        while (true) {
             displayMenu();
             int userSelection;
             while (true) {
@@ -24,39 +25,49 @@ public class Main {
 
                     try {
                         userSelection = Integer.parseInt(selectionFromUser);
+                        validateUserInput(new int[]{1, 2, 3, 0}, userSelection);
                         break;
                     } catch (NumberFormatException e) {
                         System.out.println("Please enter a valid number.");
+                    } catch (UserSelectionOutOfBoundsException e) {
+                        System.out.println("Please enter a valid number.");
                     }
                 }
-                switch (userSelection) {
-                    case (1):
-                        drawCards();
-                        break;
-                    case (2):
-                        lookAtHand();
-                        break;
-                    case (3):
-                        lookAtDiscard();
-                        break;
-                    case (0):
-                        endProgram();
-                        break;
-                    default:
-                        System.out.println("Please enter a valid number.");
-                }
+                processMenuSelection(userSelection);
                 displayMenu();
             }
-        } while (true);
+        }
     }
 
     public void displayMenu() {
-        System.out.println("There are " + deck.getDeckSize() + " cards in the deck, " + hand.getHandSize() +
-                " cards in your hand, and " + discardPile.getDiscardPileSize() + " cards in the discard pile.");
+        System.out.println("There are " + numberOfCardsToString(deck.getDeckSize()) + " in the deck, " +
+                numberOfCardsToString(hand.getHandSize()) + " in your hand, and " +
+                numberOfCardsToString(discardPile.getDiscardPileSize()) + " in the discard pile.");
         System.out.println("[1] Draw cards");
         System.out.println("[2] Look at  your hand");
         System.out.println("[3] Look at the discard pile");
         System.out.println("[0] Quit program");
+    }
+
+    public void processMenuSelection(int userSelection) {
+        switch (userSelection) {
+            case (1):
+                drawCards();
+                break;
+            case (2):
+                lookAtHand();
+                break;
+            case (3):
+                lookAtDiscard();
+                break;
+            case (0):
+                endProgram();
+                break;
+        }
+    }
+
+    public void shuffleDeck() {
+        deck.shuffle();
     }
 
     public void drawCards() {
@@ -72,7 +83,7 @@ public class Main {
             }
         }
         hand.drawCards(deck, numberOfCards);
-        System.out.println("You drew " + numberOfCards + " cards.");
+        System.out.println("You drew " + numberOfCardsToString(numberOfCards) + ".");
     }
 
     public void lookAtHand() {
@@ -85,6 +96,23 @@ public class Main {
         for (PlayingCard card: discardPile.getDiscard()) {
             System.out.println(card);
         }
+    }
+
+    public boolean validateUserInput(int[] availableSelections, int userSelection) throws UserSelectionOutOfBoundsException {
+        for (int number: availableSelections) {
+            if (number == userSelection) {
+                return true;
+            }
+        }
+        throw new UserSelectionOutOfBoundsException();
+    }
+
+    public String numberOfCardsToString(int number) {
+        String string = number + " card";
+        if (number != 1) {
+            string += "s";
+        }
+        return string;
     }
 
     public void endProgram() {
