@@ -6,19 +6,26 @@ import java.util.Scanner;
 public class Menu {
 
     private Map<Integer, String> mainMenu = new LinkedHashMap<Integer, String>();
+    private Map<Integer, String> handMenu = new LinkedHashMap<Integer, String>();
     private Scanner in = new Scanner(System.in);
 
     public Menu() {
         mainMenu.put(1, "Draw Cards");
         mainMenu.put(2, "Look at Your Hand");
         mainMenu.put(3, "Look at the Discard Pile");
-        mainMenu.put(9, "Quit Program");
+        mainMenu.put(0, "Quit Program");
+
+        handMenu.put(1, "Draw Cards");
+        handMenu.put(2, "Discard Cards");
+        handMenu.put(0, "Back");
     }
 
     public void displayMainMenu() {
-        for (Map.Entry<Integer, String> entry : mainMenu.entrySet()) {
-            System.out.println("[" + entry.getKey() + "] " + entry.getValue());
-        }
+        displayMenu(mainMenu);
+    }
+
+    public void displayHandMenu() {
+        displayMenu(handMenu);
     }
 
     public int getUserInput() {
@@ -46,10 +53,26 @@ public class Menu {
 
     public void displayHand(HandOfCards hand) {
         System.out.println("Your hand contains: ");
-        for (PlayingCard card : hand.getHand()) {
+        displayListOfCards(hand.getHand());
+        System.out.println();
+    }
+
+    public void displayDiscard(DiscardPile discardPile) {
+        System.out.println("The discard pile contains: ");
+        displayListOfCards(discardPile.getDiscard());
+        System.out.println();
+    }
+
+    private void displayMenu(Map<Integer, String> menuToDisplay) {
+        for (Map.Entry<Integer, String> entry : menuToDisplay.entrySet()) {
+            System.out.println("[" + entry.getKey() + "] " + entry.getValue());
+        }
+    }
+
+    private void displayListOfCards(List<PlayingCard> cards) {
+        for (PlayingCard card : cards) {
             System.out.println(card);
         }
-        System.out.println();
     }
 
     private String numberOfCardsToString(int number) {

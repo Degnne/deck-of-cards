@@ -32,7 +32,7 @@ public class Main {
             case (3):
                 lookAtDiscard();
                 break;
-            case (9):
+            case (0):
                 endProgram();
                 break;
         }
@@ -50,10 +50,12 @@ public class Main {
 
     public void lookAtHand() {
         menu.displayHand(game.getHand());
+        menu.displayHandMenu();
+        int userSelection = menu.getUserInput();
     }
 
     public void lookAtDiscard() {
-
+        menu.displayDiscard(game.getDiscardPile());
     }
 
     public boolean validateUserInput(int[] availableSelections, int userSelection) throws UserSelectionOutOfBoundsException {
@@ -64,8 +66,6 @@ public class Main {
         }
         throw new UserSelectionOutOfBoundsException();
     }
-
-
 
     public void endProgram() {
         System.exit(0);
