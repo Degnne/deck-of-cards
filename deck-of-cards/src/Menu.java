@@ -1,7 +1,4 @@
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Menu {
 
@@ -20,18 +17,18 @@ public class Menu {
         handMenu.put(0, "Back");
     }
 
-    public void displayMainMenu() {
+    public int displayMainMenu() {
         displayMenu(mainMenu);
+        return getMenuInput(mainMenu);
     }
 
     public void displayHandMenu() {
         displayMenu(handMenu);
     }
 
-    public int getUserInput() {
+    public String getUserInput() {
         System.out.print("Please choose an option: ");
-        int userSelection = Integer.parseInt(in.nextLine());
-        return userSelection;
+        return in.nextLine();
     }
 
     public void displayDeckHandDiscardStats(int numberOfCardsInDeck, int numberOfCardsInHand, int numberOfCardsInDiscard) {
@@ -40,10 +37,22 @@ public class Menu {
         System.out.println("Cads in the discard: " + numberOfCardsInDiscard);
     }
 
-    public int displayDrawCardsPrompt() {
-        System.out.print("How many cards would you like to draw? ");
-        int userSelection = Integer.parseInt(in.nextLine());
-        return userSelection;
+    public int displayDrawCardsPrompt(int deckSize) {
+        while(true) {
+            System.out.print("How many cards would you like to draw? ");
+            try {
+                int userSelection = Integer.parseInt(in.nextLine());
+                if (userSelection < 0) {
+                    throw new NumberFormatException();
+                }
+                if (userSelection <= deckSize) {
+                    return userSelection;
+                }
+                System.out.println("There aren't enough cards in the deck!");
+            } catch (NumberFormatException e) {
+                System.out.println("That is an invalid number.");
+            }
+        }
     }
 
     public void displayDrawCardsSuccessful(int numberOfCardsDrawn) {
@@ -52,20 +61,42 @@ public class Menu {
     }
 
     public void displayHand(HandOfCards hand) {
-        System.out.println("Your hand contains: ");
-        displayListOfCards(hand.getHand());
+        if (hand.getHandSize() > 0) {
+            System.out.println("Your hand contains: ");
+            displayListOfCards(hand.getHand());
+        } else {
+            System.out.println("You have no cards in your hand.");
+        }
         System.out.println();
     }
 
     public void displayDiscard(DiscardPile discardPile) {
-        System.out.println("The discard pile contains: ");
-        displayListOfCards(discardPile.getDiscard());
+        if (discardPile.getDiscardPileSize() > 0) {
+            System.out.println("The discard pile contains: ");
+            displayListOfCards(discardPile.getDiscard());
+        } else {
+            System.out.println("There are no cards in the discard pile.");
+        }
         System.out.println();
     }
 
     private void displayMenu(Map<Integer, String> menuToDisplay) {
         for (Map.Entry<Integer, String> entry : menuToDisplay.entrySet()) {
             System.out.println("[" + entry.getKey() + "] " + entry.getValue());
+        }
+    }
+
+    private int getMenuInput(Map<Integer, String> menu) {
+        while(true) {
+            String userInputAsString = getUserInput();
+            int userInput;
+            try {
+                userInput = Integer.parseInt(userInputAsString);
+                validateUserInput(menu.keySet(), userInput);
+                return userInput;
+            } catch (UserSelectionOutOfBoundsException | NumberFormatException e) {
+                System.out.println("That option is invalid.");
+            }
         }
     }
 
@@ -81,5 +112,14 @@ public class Menu {
             string += "s";
         }
         return string;
+    }
+
+    private void validateUserInput(Set<Integer> availableSelections, int userSelection) throws UserSelectionOutOfBoundsException {
+        for (int number: availableSelections) {
+            if (number == userSelection) {
+                return;
+            }
+        }
+        throw new UserSelectionOutOfBoundsException();
     }
 }
