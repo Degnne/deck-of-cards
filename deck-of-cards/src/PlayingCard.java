@@ -9,7 +9,6 @@ public class PlayingCard {
 
     public enum Rank {
         ACE,
-        ONE,
         TWO,
         THREE,
         FOUR,
@@ -24,8 +23,8 @@ public class PlayingCard {
         KING
     }
 
-    private Suit suit;
-    private Rank rank;
+    private final Suit suit;
+    private final Rank rank;
 
     public Suit getSuit() {
         return suit;
@@ -55,7 +54,6 @@ public class PlayingCard {
             }
         }
         switch (rank) {
-            case ONE: return 1;
             case TWO: return 2;
             case THREE: return 3;
             case FOUR: return 4;
@@ -87,6 +85,6 @@ public class PlayingCard {
 
     @Override
     public String toString() {
-        return rank + " of " + suit;
+        return rank + " of " + suit + "s";
     }
 }
