@@ -85,6 +85,6 @@ public class PlayingCard {
 
     @Override
     public String toString() {
-        return rank + " of " + suit + "s";
+        return rank + " of " + suit + "S";
     }
 }

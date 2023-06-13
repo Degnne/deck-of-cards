@@ -1,4 +1,5 @@
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -36,5 +37,26 @@ public class Menu {
         System.out.print("How many cards would you like to draw? ");
         int userSelection = Integer.parseInt(in.nextLine());
         return userSelection;
+    }
+
+    public void displayDrawCardsSuccessful(int numberOfCardsDrawn) {
+        System.out.println("You drew " + numberOfCardsToString(numberOfCardsDrawn) + "!");
+        System.out.println();
+    }
+
+    public void displayHand(HandOfCards hand) {
+        System.out.println("Your hand contains: ");
+        for (PlayingCard card : hand.getHand()) {
+            System.out.println(card);
+        }
+        System.out.println();
+    }
+
+    private String numberOfCardsToString(int number) {
+        String string = number + " card";
+        if (number != 1) {
+            string += "s";
+        }
+        return string;
     }
 }

@@ -2,9 +2,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private DeckOfCards deck = new DeckOfCards();
-    private HandOfCards hand = new HandOfCards();
-    private DiscardPile discardPile = new DiscardPile();
+    private Game game = new Game();
     private Menu menu = new Menu();
     private Scanner userInput = new Scanner(System.in);
 
@@ -16,7 +14,8 @@ public class Main {
     public void run() {
         shuffleDeck();
         while (true) {
-            menu.displayDeckHandDiscardStats(deck.getDeckSize(), hand.getHandSize(), discardPile.getDiscardPileSize());
+            menu.displayDeckHandDiscardStats(game.getDeck().getDeckSize(),
+                    game.getHand().getHandSize(), game.getDiscardPile().getDiscardPileSize());
             menu.displayMainMenu();
             processMainMenuSelection(menu.getUserInput());
         }
@@ -40,15 +39,17 @@ public class Main {
     }
 
     public void shuffleDeck() {
-        deck.shuffle();
+        game.shuffleDeck();
     }
 
     public void drawCards() {
         int numberOfCards = menu.displayDrawCardsPrompt();
+        game.drawCards(numberOfCards);
+        menu.displayDrawCardsSuccessful(numberOfCards);
     }
 
     public void lookAtHand() {
-
+        menu.displayHand(game.getHand());
     }
 
     public void lookAtDiscard() {
@@ -64,13 +65,7 @@ public class Main {
         throw new UserSelectionOutOfBoundsException();
     }
 
-    public String numberOfCardsToString(int number) {
-        String string = number + " card";
-        if (number != 1) {
-            string += "s";
-        }
-        return string;
-    }
+
 
     public void endProgram() {
         System.exit(0);
