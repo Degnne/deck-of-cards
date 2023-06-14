@@ -13,7 +13,8 @@ public class Menu {
         mainMenu.put(0, "Quit Program");
 
         handMenu.put(1, "Draw Cards");
-        handMenu.put(2, "Discard Cards");
+        handMenu.put(2, "Discard a Card");
+        handMenu.put(3, "Discard Hand");
         handMenu.put(0, "Back");
     }
 
@@ -22,8 +23,9 @@ public class Menu {
         return getMenuInput(mainMenu);
     }
 
-    public void displayHandMenu() {
+    public int displayHandMenu() {
         displayMenu(handMenu);
+        return getMenuInput(handMenu);
     }
 
     public String getUserInput() {
@@ -68,6 +70,11 @@ public class Menu {
             System.out.println("You have no cards in your hand.");
         }
         System.out.println();
+    }
+
+    public int displayHandForDiscarding(Map<Integer, String> hand) {
+        displayMenu(hand);
+        return getMenuInput(hand);
     }
 
     public void displayDiscard(DiscardPile discardPile) {

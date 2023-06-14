@@ -1,3 +1,5 @@
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Main {
 
@@ -42,14 +44,13 @@ public class Main {
             case (2):
                 discardCards();
                 break;
+            case (3):
+                discardHand();
+                break;
             case(0):
                 //TODO: End This Submenu
                 break;
         }
-    }
-
-    public void shuffleDeck() {
-        game.shuffleDeck();
     }
 
     public void drawCards() {
@@ -60,9 +61,8 @@ public class Main {
 
     public void lookAtHand() {
         menu.displayHand(game.getHand());
-        menu.displayHandMenu();
-        //int userSelection = menu.getUserInput();
-        //processHandMenuSelection(userSelection);
+        int userSelection = menu.displayHandMenu();
+        processHandMenuSelection(userSelection);
     }
 
     public void lookAtDiscard() {
@@ -70,7 +70,16 @@ public class Main {
     }
 
     public void discardCards() {
-        //TODO: How to handle discarding cards?
+        Map<Integer, String> handCards = new LinkedHashMap<Integer, String>();
+        for (int i = 1; i <= game.getHand().getHandSize(); i++) {
+            handCards.put(i, game.getHand().getHand().get(i - 1).toString());
+        }
+        int userSelection = menu.displayHandForDiscarding(handCards);
+        game.discardCard(game.getHand().getHand().get(userSelection - 1));
+    }
+
+    public void discardHand() {
+        game.discardHand();
     }
 
     public void endProgram() {

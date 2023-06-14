@@ -28,7 +28,15 @@ public class HandOfCards {
         }
     }
 
+    public void discardHand(DiscardPile discardPile) {
+        //TODO fix this!
+        for (int i = 0; i < hand.size(); i++) {
+            discardCard(discardPile, hand.get(i));
+        }
+    }
+
     public void discardCard(DiscardPile discardPile, PlayingCard cardToDiscard) {
+        hand.remove(cardToDiscard);
         discardPile.discardCard(cardToDiscard);
     }
 

@@ -27,4 +27,12 @@ public class Game {
     public void drawCards(int numberOfCards) {
         hand.drawCards(deck, numberOfCards);
     }
+
+    public void discardHand() {
+        hand.discardHand(discardPile);
+    }
+
+    public void discardCard(PlayingCard card) {
+        hand.discardCard(discardPile, card);
+    }
 }
